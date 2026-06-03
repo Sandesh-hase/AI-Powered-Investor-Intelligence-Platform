@@ -1,0 +1,15 @@
+pymupdf4llm
+langchain
+langchain-experimental
+langchain-openai
+openai
+azure-search-documents
+
+psycopg2-binary
+sqlalchemy
+psycopg2
+
+fastapi
+uvicorn
+python-multipart
+jinja2
