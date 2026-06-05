@@ -65,7 +65,7 @@ if __name__ == "__main__":
         api_version=api_version
     )
 
-    markdown_file = "../data/markdown/2024_AnnualReport_Tesla.md"
+    markdown_file = "../data/markdown/2024_Apple.md"
 
     chunks = chunk_markdown(
         markdown_file=markdown_file,

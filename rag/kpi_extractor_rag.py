@@ -94,7 +94,7 @@ def retrieve_context(
         year=year,
         top_k=20
     )
-
+    # print(documents)
     return "\n\n".join(
         doc.page_content
         for doc in documents
