@@ -1,16 +1,39 @@
-# This is a basic workflow to help you get started with Actions
-name: Test
-
+name: CI-CD Pipeline
 
 on:
   push:
     branches:
       - cicd-setup
 
-
 jobs:
-  test:
+
+  test-azure-login:
+
     runs-on: ubuntu-latest
 
     steps:
-      - run: echo "Hello World"
+
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Azure Login
+      uses: azure/login@v2
+      with:
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
+
+    - name: Verify Azure Login
+      run: |
+        az account show
+
+    - name: Login to ACR
+      run: |
+        docker login invintelligence.azurecr.io \
+        -u ${{ secrets.ACR_USERNAME }} \
+        -p ${{ secrets.ACR_PASSWORD }}
+
+    - name: Verify ACR Login
+      run: |
+        echo "ACR Login Successful"
