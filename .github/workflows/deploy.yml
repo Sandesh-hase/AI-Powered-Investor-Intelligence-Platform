@@ -6,8 +6,6 @@ on:
     branches:
       - cicd-setup
 
-on:
-  workflow_dispatch:
 
 jobs:
   test:
