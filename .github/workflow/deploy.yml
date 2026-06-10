@@ -5,13 +5,11 @@ on:
     branches:
       - cicd
 
-
 jobs:
 
   build-and-deploy:
 
     runs-on: ubuntu-latest
-
 
     steps:
 
@@ -26,7 +24,6 @@ jobs:
       - name: Login to ACR
         run: |
           az acr login --name ${{ secrets.ACR_NAME }}
-
 
       - name: Docker Login to ACR
         run: |
@@ -56,7 +53,6 @@ jobs:
           kubectl apply -f k8s/deployment.yaml
           kubectl apply -f k8s/service.yaml
 
-
       - name: Restart Deployment
         run: |
           kubectl rollout restart deployment/invint
@@ -64,3 +60,4 @@ jobs:
       - name: Verify Rollout
         run: |
           kubectl rollout status deployment/invint
+
