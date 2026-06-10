@@ -47,7 +47,7 @@ jobs:
             --resource-group ${{ secrets.AKS_RESOURCE_GROUP }} \
             --name ${{ secrets.AKS_CLUSTER_NAME }} \
             --overwrite-existing
-
+            
       - name: Create Kubernetes Secrets
         run: |
           kubectl create secret generic invint-secrets \
@@ -67,7 +67,7 @@ jobs:
             --from-literal=POSTGRES_USER="${{ secrets.POSTGRES_USER }}" \
             --from-literal=POSTGRES_PASSWORD="${{ secrets.POSTGRES_PASSWORD }}" \
             --dry-run=client -o yaml | kubectl apply -f -
-            
+
       - name: Deploy Application
         run: |
           kubectl apply -f k8s/deployment.yaml
