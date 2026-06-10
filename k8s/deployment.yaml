@@ -24,5 +24,9 @@ spec:
 
         imagePullPolicy: Always
 
+        envFrom:
+        - secretRef:
+            name: invint-secrets
+            
         ports:
         - containerPort: 8000
