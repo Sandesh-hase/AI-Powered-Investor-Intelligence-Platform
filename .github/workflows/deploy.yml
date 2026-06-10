@@ -1,4 +1,4 @@
-name: Azure Login Test
+name: Build and Deploy to AKS
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
 
 jobs:
 
-  test-login:
+  build-and-deploy:
 
     runs-on: ubuntu-latest
 
@@ -16,15 +16,42 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Login to Azure
+      - name: Azure Login
         uses: azure/login@v2
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Verify Azure Login
+      - name: Login to ACR
         run: |
-          az account show
+          az acr login --name ${{ secrets.ACR_NAME }}
 
-      - name: Show Subscription
+      - name: Build Docker Image
         run: |
-          az account list --output table
+          docker build \
+            -t ${{ secrets.ACR_LOGIN_SERVER }}/invint:latest .
+
+      - name: Push Docker Image
+        run: |
+          docker push \
+            ${{ secrets.ACR_LOGIN_SERVER }}/invint:latest
+
+      - name: Get AKS Credentials
+        run: |
+          az aks get-credentials \
+            --resource-group ${{ secrets.AKS_RESOURCE_GROUP }} \
+            --name ${{ secrets.AKS_CLUSTER_NAME }} \
+            --overwrite-existing
+
+      - name: Deploy Application
+        run: |
+          kubectl apply -f k8s/deployment.yaml
+          kubectl apply -f k8s/service.yaml
+
+      - name: Restart Deployment
+        run: |
+          kubectl rollout restart deployment/invint
+
+      - name: Verify Rollout
+        run: |
+          kubectl rollout status deployment/invint
+

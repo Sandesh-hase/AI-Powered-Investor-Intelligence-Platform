@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: invint
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: invint
+
+  template:
+    metadata:
+      labels:
+        app: invint
+
+    spec:
+      containers:
+      - name: invint
+
+        image: invintelligence.azurecr.io/invint:latest
+
+        ports:
+        - containerPort: 8000
+
+        imagePullPolicy: Always
+
